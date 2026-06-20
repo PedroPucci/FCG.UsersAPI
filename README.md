@@ -45,9 +45,6 @@ De acordo com os requisitos do desafio, o sistema implementa as seguintes regras
 
 ### **Cadastro de Usuário**
 - Não é permitido cadastrar usuários com dados inválidos
-
-### **Biblioteca de Jogos**
-- O usuário pode possuir uma lista de jogos associados
 ---
 
 ## **Observações**
