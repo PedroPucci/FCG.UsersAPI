@@ -45,17 +45,6 @@ De acordo com os requisitos do desafio, o sistema implementa as seguintes regras
 ### **Cadastro de Usuário**
 - Não é permitido cadastrar usuários com dados inválidos
 ---
-
-## **Observações**
-- As validações são implementadas utilizando FluentValidation
-- Os erros são tratados e retornados de forma padronizada via Result<T>
----
-
-# **Solução**
-- API REST desenvolvida em .NET 8.0, utilizando Entity Framework Core e os padrões Unit of Work e Repository, com suporte a validações, tratamento de erros, logging e documentação via Swagger.
-
----
-
 ## **Tecnologias**
 - .NET 8.0
 - Entity Framework Core
