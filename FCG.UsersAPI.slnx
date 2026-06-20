@@ -1,3 +1,11 @@
 <Solution>
-  <Project Path="FCG.UsersAPI/FCG.UsersAPI.csproj" />
+  <Folder Name="/docs/" />
+  <Folder Name="/src/">
+    <Project Path="FCG.UsersAPI.Domain/FCG.UsersAPI.Domain.csproj" Id="e99d0c45-6f3e-4fb4-bc60-9686bf1507b5" />
+    <Project Path="FCG.UsersAPI.Infrastructure/FCG.UsersAPI.Infrastructure.csproj" Id="fcae46d9-64aa-4223-bad1-e552a9592e5b" />
+    <Project Path="FCG.UsersAPI.Shared/FCG.UsersAPI.Shared.csproj" Id="7f52a7d5-aa09-4aeb-9170-1c7b41984342" />
+    <Project Path="src/FCG.UsersAPI.Application/FCG.UsersAPI.Application.csproj" />
+    <Project Path="src/FCG.UsersAPI/FCG.UsersAPI.csproj" />
+  </Folder>
+  <Folder Name="/tests/" />
 </Solution>
