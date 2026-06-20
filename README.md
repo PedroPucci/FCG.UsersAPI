@@ -27,7 +27,7 @@ Permite que usuários realizem login utilizando: email e senha.
 ### Autorização
 A API utiliza autorização baseada em roles: Perfis disponíveis: Admin e User
 
-## **Regras de Negócio**
+# **Regras de Negócio**
 De acordo com os requisitos do desafio, o sistema implementa as seguintes regras:
 
 ### **Usuário**
