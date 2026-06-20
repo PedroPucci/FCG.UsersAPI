@@ -1,6 +1,6 @@
 # FCG Users API
 # **Descrição do projeto**
-O FCG Users API é o microsserviço responsável pelo gerenciamento de usuários da plataforma FCG (FIAP Cloud Games).
+O FCG Users API é o microsserviço utilizando .NET 8, seguindo os princípios de Clean Architecture, separação de responsabilidades e boas práticas de desenvolvimento. Esse microserviço é responsável pelo gerenciamento de usuários da plataforma FCG (FIAP Cloud Games).
 Este serviço é responsável por:
 - Cadastro de usuários
 - Autenticação de usuários
@@ -9,7 +9,6 @@ Este serviço é responsável por:
 - Publicação de eventos de usuário criado
 - Persistência de dados
 - Validação de regras de negócio
-A aplicação foi desenvolvida utilizando .NET 8, seguindo os princípios de Clean Architecture, separação de responsabilidades e boas práticas de desenvolvimento.
 
 # Responsabilidades do Microsserviço
 ### Cadastro de Usuários
