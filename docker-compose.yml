@@ -1,0 +1,32 @@
+services:
+  fcg-users-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fcg-users-api
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      RunMigrations: "true"
+      ConnectionStrings__DefaultConnection: "Server=fcg-users-sqlserver;Database=FCGUsersDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+      Jwt__Secret: "SUA_CHAVE_SECRETA_GRANDE_PARA_JWT_123456789"
+      Jwt__Issuer: "FCG.UsersAPI"
+      Jwt__Audience: "FCG.UsersAPI"
+    depends_on:
+      - fcg-users-sqlserver
+
+  fcg-users-sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: fcg-users-sqlserver
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "YourStrong!Passw0rd"
+    volumes:
+      - fcg_users_sqlserver_data:/var/opt/mssql
+
+volumes:
+  fcg_users_sqlserver_data:
