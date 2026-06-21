@@ -23,7 +23,7 @@ UserCreatedEvent
 Permite que usuários realizem login utilizando: email e senha.
 
 ### Autorização
-A API utiliza autorização baseada em roles: Perfis disponíveis: Admin e User
+A API utiliza autorização baseada em roles e os perfis disponíveis são Admin e User.
 
 # **Regras de Negócio**
 De acordo com os requisitos do desafio, o sistema implementa as seguintes regras:
@@ -44,16 +44,6 @@ De acordo com os requisitos do desafio, o sistema implementa as seguintes regras
 ### **Cadastro de Usuário**
 - Não é permitido cadastrar usuários com dados inválidos
 ---
-## **Tecnologias**
-- .NET 8.0
-- Entity Framework Core
-- SQL Server
-
-## **Ferramentas**
-- Visual Studio 2022
-- SQL Server Management Studio (SSMS)
-- Git / Git Bash
----
 ## **Recursos do Projeto**
 - **Serilog**: Para geração e gerenciamento de logs.
 - **FluentValidator**: Para validação de dados e regras de negócios.
@@ -67,8 +57,9 @@ De acordo com os requisitos do desafio, o sistema implementa as seguintes regras
 ## **Como Executar o Projeto**
 ### **1. Configuração Inicial do Banco de Dados**
 1. Faça o clone do projeto.
-2. Verifique se a pasta `Migrations` no projeto está vazia. Caso contrário, delete todos os arquivos dessa pasta.   
-3. Execute os seguintes comandos no **Package Manager Console**:
+2. Utilize algum IDE para executar o projeto.
+3. Verifique se a pasta `Migrations` no projeto está vazia. Caso contrário, delete todos os arquivos dessa pasta.   
+4. Execute os seguintes comandos no **Package Manager Console**:
    - Certifique-se de selecionar o projeto relacionado ao banco de dados no menu "Default project".
    - Execute:
      ```bash
