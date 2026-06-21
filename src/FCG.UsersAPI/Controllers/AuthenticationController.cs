@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FCG.UsersAPI.Application.Abstractions.Persistence;
+using FCG.UsersAPI.Application.Contracts.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FCG.UsersAPI.Controllers

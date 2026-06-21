@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FCG.UsersAPI.Application.Abstractions.Persistence;
+using FCG.UsersAPI.Application.Contracts.Dto;
+using FCG.UsersAPI.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FCG.UsersAPI.Controllers
@@ -18,9 +21,9 @@ namespace FCG.UsersAPI.Controllers
         [HttpPost()]
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Add([FromBody] UserResponse userEntity)
+        public async Task<IActionResult> Add([FromBody] CreateUserRequestDto createUserRequestDto)
         {
-            var result = await _uow.UserService.Add(userEntity);
+            var result = await _uow.UserService.Add(createUserRequestDto);
             return Ok(result);
         }
 
@@ -29,7 +32,7 @@ namespace FCG.UsersAPI.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update([FromRoute] string id, [FromBody] UpdateUserRequest updateUserRequest)
+        public async Task<IActionResult> Update([FromRoute] string id, [FromBody] UpdateUserRequestDto updateUserRequest)
         {
             var result = await _uow.UserService.Update(id, updateUserRequest);
 
