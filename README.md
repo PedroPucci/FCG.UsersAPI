@@ -18,7 +18,6 @@ Ao realizar um cadastro com sucesso, o serviço publica o evento:
 ```text
 UserCreatedEvent
 ```
-Esse evento será consumido pelo microsserviço de notificações para envio do e-mail de boas-vindas.
 
 ### Autenticação
 Permite que usuários realizem login utilizando: email e senha.
