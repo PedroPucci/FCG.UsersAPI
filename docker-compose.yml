@@ -11,7 +11,7 @@ services:
       ASPNETCORE_URLS: http://+:8080
       RunMigrations: "true"
       # ConnectionStrings__DefaultConnection: "Server=fcg-users-sqlserver;Database=FCGUsersDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
-      ConnectionStrings__DefaultConnection: "Server=fcg-users-sqlserver;Database=FCGUserApi;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+      ConnectionStrings__WebApiDatabase: "Server=fcg-users-sqlserver;Database=FCGUserApi;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
       Jwt__Secret: "SUA_CHAVE_SECRETA_GRANDE_PARA_JWT_123456789"
       Jwt__Issuer: "FCG.UsersAPI"
       Jwt__Audience: "FCG.UsersAPI"
