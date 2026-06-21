@@ -69,7 +69,7 @@ De acordo com os requisitos do desafio, o sistema implementa as seguintes regras
    - Isso criará e configurará o banco de dados no Microsoft SQL Server.
 ---
 ### **2. Executando o Projeto**
-1. Abra o projeto no Visual Studio 2022.
+1. Abra o projeto no Visual Studio 2022 ou em outro IDE de sua escolha.
 2. Configure o projeto principal para execução:
    - Clique com o botão direito no projeto **FCG.Platform** e selecione `Set as Startup Project`.
 3. Clique no botão **HTTPS** no menu superior para iniciar a aplicação.
