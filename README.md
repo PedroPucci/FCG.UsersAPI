@@ -92,7 +92,7 @@ De acordo com os requisitos do desafio, o sistema implementa as seguintes regras
 ### **4. Configuração do Log**
 - O sistema gera logs diários com informações sobre os processos executados no projeto.
 - O log será salvo no diretório:  
-  `C://Users//User//Downloads//FCG-Platform-logs`.  
+  `C://Users//User//Downloads//FCG-UserAPI-logs`.  
   **Nota**: É necessário criar a pasta manualmente nesse caminho ou alterar o diretório no código, caso deseje personalizá-lo.
 
   **Formato do arquivo de log criado**:
