@@ -86,7 +86,6 @@ namespace FCG.UsersAPI.Application.Services
             {
                 new(ClaimTypes.NameIdentifier, user.Id),
                 new(ClaimTypes.Email, user.Email ?? "")
-                //new Claim(ClaimTypes.Role, "Administrator")
             };
 
             if (!string.IsNullOrWhiteSpace(user.UserName))

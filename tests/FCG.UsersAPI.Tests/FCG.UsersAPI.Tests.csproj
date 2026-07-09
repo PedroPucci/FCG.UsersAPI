@@ -39,11 +39,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Validators\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\src\FCG.UsersAPI.Application\FCG.UsersAPI.Application.csproj" />
     <ProjectReference Include="..\..\src\FCG.UsersAPI.Infrastructure\FCG.UsersAPI.Infrastructure.csproj" />
   </ItemGroup>
