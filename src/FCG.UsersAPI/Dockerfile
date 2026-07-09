@@ -15,7 +15,7 @@ RUN dotnet restore "src/FCG.UsersAPI/FCG.UsersAPI.csproj"
 
 COPY . .
 
-RUN dotnet publish "src/FCG.UsersAPI/FCG.UsersAPI.csproj" -c Release -o /app/publish
+RUN dotnet publish "src/FCG.UsersAPI/FCG.UsersAPI.csproj" -c Release -o /app/publish --no-restore
 
 FROM base AS final
 WORKDIR /app
