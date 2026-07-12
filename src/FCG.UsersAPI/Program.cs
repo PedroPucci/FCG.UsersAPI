@@ -1,7 +1,10 @@
+using FCG.UsersAPI.Application.Abstractions.Messaging;
 using FCG.UsersAPI.Extensions;
 using FCG.UsersAPI.Extensions.ExtensionsLogs;
 using FCG.UsersAPI.Infrastructure.Connections;
+using FCG.UsersAPI.Messaging;
 using Microsoft.EntityFrameworkCore;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +12,41 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddApplicationServices(builder.Configuration);
-builder.Services.AddHttpContextAccessor();
+//builder.Services.AddHttpContextAccessor();
+//builder.Services.AddScoped<UserCreatedEventPublisher>();
+//builder.Services.AddScoped<IUserCreatedEventPublisher,UserCreatedEventPublisher>();
+builder.Services.AddScoped<IUserCreatedEventPublisher,UserCreatedEventPublisher>();
+var rabbitMqHost =
+    builder.Configuration["RabbitMq:Host"]
+    ?? "localhost";
+
+var rabbitMqUsername =
+    builder.Configuration["RabbitMq:Username"]
+    ?? "guest";
+
+var rabbitMqPassword =
+    builder.Configuration["RabbitMq:Password"]
+    ?? "guest";
+builder.Services.AddMassTransit(configuration =>
+{
+    configuration.UsingRabbitMq((context, rabbitMq) =>
+    {
+        //rabbitMq.Host("localhost", "/", host =>
+        //{
+        //    host.Username("guest");
+        //    host.Password("guest");
+        //});
+        rabbitMq.Host("host.docker.internal", "/", host =>
+        {
+            //host.Username("guest");
+            //host.Password("guest");
+            host.Username(rabbitMqUsername);
+            host.Password(rabbitMqPassword);
+        });
+    });
+});
+
+//builder.Services.AddScoped<IUserCreatedEventPublisher,UserCreatedEventPublisher>();
 
 LogExtension.InitializeLogger();
 var loggerSerialLog = LogExtension.GetLogger();

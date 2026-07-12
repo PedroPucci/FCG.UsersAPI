@@ -1,4 +1,5 @@
-﻿using FCG.UsersAPI.Application.Services;
+﻿using FCG.UsersAPI.Application.Abstractions.Messaging;
+using FCG.UsersAPI.Application.Services;
 using FCG.UsersAPI.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
@@ -11,15 +12,18 @@ namespace FCG.UsersAPI.Application.Abstractions.Persistence
         private readonly RoleManager<ProfileEntity> _roleManager;
         private UserService userService;
         private AuthenticationService authenticationService;
+        private readonly IUserCreatedEventPublisher _userCreatedEventPublisher;
 
         public UnitOfWorkService(
             IRepositoryUoW repositoryUoW,
             UserManager<UserEntity> userManager,
-            RoleManager<ProfileEntity> roleManager)
+            RoleManager<ProfileEntity> roleManager,
+            IUserCreatedEventPublisher userCreatedEventPublisher)
         {
             _repositoryUoW = repositoryUoW;
             _userManager = userManager;
             _roleManager = roleManager;
+            _userCreatedEventPublisher = userCreatedEventPublisher;
         }
 
         public UserService UserService
@@ -30,7 +34,8 @@ namespace FCG.UsersAPI.Application.Abstractions.Persistence
                     userService = new UserService(
                         _repositoryUoW,
                         _userManager,
-                        _roleManager);
+                        _roleManager,
+                        _userCreatedEventPublisher);
                 return userService;
             }
         }

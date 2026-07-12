@@ -1,4 +1,5 @@
-﻿using FCG.UsersAPI.Application.Abstractions.Persistence;
+﻿using FCG.UsersAPI.Application.Abstractions.Messaging;
+using FCG.UsersAPI.Application.Abstractions.Persistence;
 using FCG.UsersAPI.Application.Abstractions.Services;
 using FCG.UsersAPI.Application.Contracts.Dto;
 using FCG.UsersAPI.Application.Validators;
@@ -15,15 +16,18 @@ namespace FCG.UsersAPI.Application.Services
         private readonly IRepositoryUoW _repositoryUoW;
         private readonly UserManager<UserEntity> _userManager;
         private readonly RoleManager<ProfileEntity> _roleManager;
+        private readonly IUserCreatedEventPublisher _userCreatedEventPublisher;
 
         public UserService(
             IRepositoryUoW repositoryUoW,
             UserManager<UserEntity> userManager,
-            RoleManager<ProfileEntity> roleManager)
+            RoleManager<ProfileEntity> roleManager,
+            IUserCreatedEventPublisher userCreatedEventPublisher)
         {
             _repositoryUoW = repositoryUoW;
             _userManager = userManager;
             _roleManager = roleManager;
+            _userCreatedEventPublisher = userCreatedEventPublisher;
         }
 
         public async Task<Result<UserEntity>> Add(CreateUserRequestDto createUserRequestDto)
@@ -32,6 +36,42 @@ namespace FCG.UsersAPI.Application.Services
 
             try
             {
+                var validationResult =
+                    await IsValidUserRequest(createUserRequestDto);
+
+                if (!validationResult.Success)
+                {
+                    Log.Information(validationResult.Message);
+
+                    return Result<UserEntity>.Error(
+                        validationResult.Message);
+                }
+
+                if (string.IsNullOrWhiteSpace(createUserRequestDto.Role))
+                {
+                    const string message =
+                        "'Role' can not be null or empty!";
+
+                    Log.Information(message);
+
+                    return Result<UserEntity>.Error(message);
+                }
+
+                var role = createUserRequestDto.Role.Trim();
+
+                var roleExists =
+                    await _roleManager.RoleExistsAsync(role);
+
+                if (!roleExists)
+                {
+                    const string message =
+                        "Invalid role. Use only: Administrator or Usuario.";
+
+                    Log.Information(message);
+
+                    return Result<UserEntity>.Error(message);
+                }
+
                 var userEntity = new UserEntity
                 {
                     Email = createUserRequestDto.Email,
@@ -41,53 +81,63 @@ namespace FCG.UsersAPI.Application.Services
                     IsActive = true
                 };
 
-                var isValid = await IsValidUserRequest(createUserRequestDto);
-                if (!isValid.Success)
-                {
-                    Log.Information(isValid.Message);
-                    return Result<UserEntity>.Error(isValid.Message);
-                }
-
-                if (string.IsNullOrWhiteSpace(createUserRequestDto.Role))
-                {
-                    Log.Information("'Role' can not be null or empty!");
-                    return Result<UserEntity>.Error("'Role' can not be null or empty!");
-                }
-
-                var role = createUserRequestDto.Role.Trim();
-
-                var roleExists = await _roleManager.RoleExistsAsync(role);
-
-                if (!roleExists)
-                {
-                    Log.Information("Invalid role.");
-                    return Result<UserEntity>.Error("Invalid role. Use only: Administrator or Usuario.");
-                }
-
-                var createResult = await _userManager.CreateAsync(userEntity, createUserRequestDto.Password!);
+                var createResult =
+                    await _userManager.CreateAsync(
+                        userEntity,
+                        createUserRequestDto.Password!);
 
                 if (!createResult.Succeeded)
                 {
-                    var errors = string.Join(" ", createResult.Errors.Select(e => e.Description));
+                    var errors = string.Join(
+                        " ",
+                        createResult.Errors.Select(
+                            error => error.Description));
+
+                    await transaction.RollbackAsync();
+
+                    Log.Information(errors);
+
                     return Result<UserEntity>.Error(errors);
                 }
 
-                var roleResult = await _userManager.AddToRoleAsync(userEntity, role);
+                var roleResult =
+                    await _userManager.AddToRoleAsync(
+                        userEntity,
+                        role);
 
                 if (!roleResult.Succeeded)
                 {
-                    var errors = string.Join(" ", roleResult.Errors.Select(e => e.Description));
+                    var errors = string.Join(
+                        " ",
+                        roleResult.Errors.Select(
+                            error => error.Description));
+
+                    await transaction.RollbackAsync();
+
+                    Log.Information(errors);
+
                     return Result<UserEntity>.Error(errors);
                 }
 
                 await transaction.CommitAsync();
-                Log.Information(LogMessages.AddUserSuccess(userEntity));
+
+                await _userCreatedEventPublisher.Publish(
+                    userEntity.Id,
+                    userEntity.Name ?? string.Empty,
+                    userEntity.Email ?? string.Empty);
+
+                Log.Information(
+                    LogMessages.AddUserSuccess(userEntity));
+
                 return Result<UserEntity>.Ok(userEntity);
             }
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                Log.Information(LogMessages.AddUserError(ex));
+
+                Log.Error(
+                    LogMessages.AddUserError(ex));
+
                 throw;
             }
         }

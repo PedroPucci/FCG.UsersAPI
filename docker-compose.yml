@@ -3,31 +3,62 @@ services:
     build:
       context: .
       dockerfile: src/FCG.UsersAPI/Dockerfile
+
     image: fcg-users-api
     container_name: fcg-users-api
+
     ports:
       - "8080:8080"
+
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_URLS: http://+:8080
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_URLS: "http://+:8080"
+
+      RabbitMq__Host: "host.docker.internal"
+      RabbitMq__Username: "guest"
+      RabbitMq__Password: "guest"
+
       RunMigrations: "true"
-      ConnectionStrings__WebApiDatabase: "Server=fcg-users-sqlserver;Database=FCGUserApi;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;"
+
+      ConnectionStrings__WebApiDatabase: "Server=fcg-users-sqlserver,1433;Database=FCGUserApi;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;Encrypt=False;"
+
       Jwt__Secret: "SUA_CHAVE_SECRETA_GRANDE_PARA_JWT_123456789"
       Jwt__Issuer: "FCG.UsersAPI"
       Jwt__Audience: "FCG.UsersAPI"
+
     depends_on:
-      - fcg-users-sqlserver
+      fcg-users-sqlserver:
+        condition: service_healthy
+
+    restart: unless-stopped
 
   fcg-users-sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: fcg-users-sqlserver
+
     ports:
       - "1433:1433"
+
     environment:
       ACCEPT_EULA: "Y"
-      SA_PASSWORD: "YourStrong!Passw0rd"
+      MSSQL_PID: "Developer"
+      MSSQL_SA_PASSWORD: "YourStrong!Passw0rd"
+
     volumes:
       - fcg_users_sqlserver_data:/var/opt/mssql
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -C -Q \"SELECT 1\" || exit 1"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+    restart: unless-stopped
 
 volumes:
   fcg_users_sqlserver_data:
