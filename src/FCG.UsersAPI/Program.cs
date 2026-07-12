@@ -12,9 +12,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddApplicationServices(builder.Configuration);
-//builder.Services.AddHttpContextAccessor();
-//builder.Services.AddScoped<UserCreatedEventPublisher>();
-//builder.Services.AddScoped<IUserCreatedEventPublisher,UserCreatedEventPublisher>();
 builder.Services.AddScoped<IUserCreatedEventPublisher,UserCreatedEventPublisher>();
 var rabbitMqHost =
     builder.Configuration["RabbitMq:Host"]
@@ -31,22 +28,13 @@ builder.Services.AddMassTransit(configuration =>
 {
     configuration.UsingRabbitMq((context, rabbitMq) =>
     {
-        //rabbitMq.Host("localhost", "/", host =>
-        //{
-        //    host.Username("guest");
-        //    host.Password("guest");
-        //});
         rabbitMq.Host("host.docker.internal", "/", host =>
         {
-            //host.Username("guest");
-            //host.Password("guest");
             host.Username(rabbitMqUsername);
             host.Password(rabbitMqPassword);
         });
     });
 });
-
-//builder.Services.AddScoped<IUserCreatedEventPublisher,UserCreatedEventPublisher>();
 
 LogExtension.InitializeLogger();
 var loggerSerialLog = LogExtension.GetLogger();

@@ -22,9 +22,10 @@ services:
 
       ConnectionStrings__WebApiDatabase: "Server=fcg-users-sqlserver,1433;Database=FCGUserApi;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;Encrypt=False;"
 
-      Jwt__Secret: "SUA_CHAVE_SECRETA_GRANDE_PARA_JWT_123456789"
-      Jwt__Issuer: "FCG.UsersAPI"
-      Jwt__Audience: "FCG.UsersAPI"
+      JwtSettings__Issuer: "PedroIghor"
+      JwtSettings__Audience: "https://localhost:5001"
+      JwtSettings__SecretKey: "EAA4Cf4JnqYwBP9MSZC8cHvMSvmShHZBU27qQxZBS3ORNSoIdEz3me0QHZABLNBiEWtDmVLZBVeMF8QZCd"
+      JwtSettings__ExpirationInMinutes: "60"
 
     depends_on:
       fcg-users-sqlserver:
