@@ -2,6 +2,20 @@
   <Folder Name="/docs/">
     <File Path="docs/TC NETT - Fase 2.pdf" />
   </Folder>
+  <Folder Name="/K8S/">
+    <File Path="k8s/configMap.yaml" />
+    <File Path="k8s/deployment.yaml" />
+    <File Path="k8s/rabbitmq-deployment.yaml" />
+    <File Path="k8s/rabbitmq-pvc.yaml" />
+    <File Path="k8s/rabbitmq-secret.yaml" />
+    <File Path="k8s/rabbitmq-service.yaml" />
+    <File Path="k8s/secret.yaml" />
+    <File Path="k8s/service.yaml" />
+    <File Path="users-sqlserver-deployment.yaml" />
+    <File Path="users-sqlserver-pvc.yaml" />
+    <File Path="users-sqlserver-secret.yaml" />
+    <File Path="users-sqlserver-service.yaml" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/FCG.UsersAPI.Application/FCG.UsersAPI.Application.csproj" />
     <Project Path="src/FCG.UsersAPI.Domain/FCG.UsersAPI.Domain.csproj" />

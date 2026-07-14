@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-sqlserver
+  namespace: fcg
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: users-sqlserver
+
+  template:
+    metadata:
+      labels:
+        app: users-sqlserver
+
+    spec:
+      containers:
+        - name: users-sqlserver
+          image: mcr.microsoft.com/mssql/server:2022-latest
+
+          ports:
+            - name: sqlserver
+              containerPort: 1433
+
+          env:
+            - name: ACCEPT_EULA
+              value: "Y"
+
+            - name: MSSQL_PID
+              value: "Developer"
+
+            - name: MSSQL_SA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: users-sqlserver-secret
+                  key: MSSQL_SA_PASSWORD
+
+          volumeMounts:
+            - name: users-sqlserver-data
+              mountPath: /var/opt/mssql
+
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+
+            limits:
+              cpu: "2"
+              memory: "2Gi"
+
+          readinessProbe:
+            tcpSocket:
+              port: 1433
+            initialDelaySeconds: 25
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 10
+
+          livenessProbe:
+            tcpSocket:
+              port: 1433
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 6
+
+      volumes:
+        - name: users-sqlserver-data
+          persistentVolumeClaim:
+            claimName: users-sqlserver-pvc

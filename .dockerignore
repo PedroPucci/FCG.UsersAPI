@@ -28,3 +28,10 @@ README.md
 !.git/config
 !.git/packed-refs
 !.git/refs/heads/**
+!NuGet.Config
+!nuget-packages/
+!nuget-packages/**
+
+!nuget.config
+!nuget-packages/
+!nuget-packages/**
