@@ -1,18 +1,24 @@
-﻿using FCG.Contracts.Events;
+﻿using System.Text.Json;
+using Amazon.SQS;
+using Amazon.SQS.Model;
+using FCG.Contracts.Events;
 using FCG.UsersAPI.Application.Abstractions.Messaging;
-using MassTransit;
+using Microsoft.Extensions.Configuration;
 
 namespace FCG.UsersAPI.Messaging
 {
     public class UserCreatedEventPublisher
         : IUserCreatedEventPublisher
     {
-        private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IAmazonSQS _sqs;
+        private readonly IConfiguration _configuration;
 
         public UserCreatedEventPublisher(
-            IPublishEndpoint publishEndpoint)
+            IAmazonSQS sqs,
+            IConfiguration configuration)
         {
-            _publishEndpoint = publishEndpoint;
+            _sqs = sqs;
+            _configuration = configuration;
         }
 
         public async Task Publish(
@@ -25,7 +31,27 @@ namespace FCG.UsersAPI.Messaging
                 name,
                 email);
 
-            await _publishEndpoint.Publish(userCreatedEvent);
+            var message = new
+            {
+                eventType = "UserCreated",
+                data = userCreatedEvent
+            };
+
+            var queueUrl =
+                _configuration["AWS:SQS:NotificationsQueueUrl"];
+
+            if (string.IsNullOrWhiteSpace(queueUrl))
+            {
+                throw new InvalidOperationException(
+                    "AWS:SQS:NotificationsQueueUrl não configurada.");
+            }
+
+            await _sqs.SendMessageAsync(
+                new SendMessageRequest
+                {
+                    QueueUrl = queueUrl,
+                    MessageBody = JsonSerializer.Serialize(message)
+                });
         }
     }
 }
