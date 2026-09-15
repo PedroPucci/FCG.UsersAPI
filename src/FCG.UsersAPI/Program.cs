@@ -7,6 +7,7 @@ using FCG.UsersAPI.Infrastructure.Connections;
 using FCG.UsersAPI.Messaging;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -97,6 +98,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 
+// Métricas HTTP para Prometheus
+app.UseHttpMetrics();
+
 app.UseCors("CorsPolicy");
 
 app.UseSession();
@@ -105,6 +109,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Endpoint /metrics
+app.MapMetrics();
 
 // Executa migrations automaticamente quando configurado
 var runMigrations =
