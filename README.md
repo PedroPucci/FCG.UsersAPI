@@ -337,3 +337,63 @@ http://localhost:8080/swagger
 A interface permitirá explorar, autenticar e testar todos os endpoints disponibilizados pelo microsserviço.
 
 ---
+# Fase 3 — Kubernetes e API Gateway
+
+O UsersAPI foi integrado ao ambiente Kubernetes da plataforma FCG através do Minikube.
+
+Namespace:
+
+```text
+fcg
+Kong API Gateway
+
+O UsersAPI foi integrado ao Kong API Gateway.
+
+O endpoint de autenticação é disponibilizado através do Gateway:
+
+POST /auth/login
+
+Fluxo:
+
+Cliente
+   │
+   ▼
+Kong API Gateway
+   │
+   ▼
+UsersAPI
+   │
+   ▼
+JWT
+Login através do Kong
+
+O login foi validado através do Kong utilizando:
+
+{
+  "email": "pedro.teste@fcg.com",
+  "password": "Teste@12345"
+}
+
+O UsersAPI retorna o JWT que será utilizado para acessar os endpoints protegidos dos demais serviços.
+
+Integração com CatalogAPI
+
+O JWT gerado pelo UsersAPI foi utilizado para acessar o CatalogAPI através do Kong.
+
+Fluxo:
+
+UsersAPI
+   │
+   │ JWT
+   ▼
+Cliente
+   │
+   │ Bearer JWT
+   ▼
+Kong
+   │
+   │ valida JWT
+   ▼
+CatalogAPI
+
+A integração foi validada com sucesso no ambiente Kubernetes.
