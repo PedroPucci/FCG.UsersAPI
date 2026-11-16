@@ -15,7 +15,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copia o NuGet.Config e o pacote local
-COPY ["nuget.config", "/src/nuget.config"]
+COPY ["NuGet.config", "/src/nuget.config"]
 COPY ["nuget-packages/", "/src/nuget-packages/"]
 
 # Copia os arquivos de projeto
