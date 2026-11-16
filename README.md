@@ -397,3 +397,8 @@ Kong
 CatalogAPI
 
 A integração foi validada com sucesso no ambiente Kubernetes.
+
+## Fase 4 - Cloud, NoSQL, Cache, Busca Avancada e CI/CD
+
+A evolucao do projeto para a Fase 4 esta documentada
+em [Documentacao da Fase 4](docs/FASE-4.md).

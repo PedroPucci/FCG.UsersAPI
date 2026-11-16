@@ -360,4 +360,13 @@ MigrationBackup/
 .ionide/
 
 # Fody - auto-generated XML schema
-FodyWeavers.xsd
+FodyWeavers.xsd/k8s/rabbitmq-secret.yaml
+/k8s/secret.yaml
+/k8s/users-sqlserver-secret.yaml
+
+# Kubernetes Secrets - arquivos privados
+/k8s/rabbitmq-secret.yaml
+/k8s/secret.yaml
+/k8s/users-sqlserver-secret.yaml
+*.backup
+*.pre-eks.backup
